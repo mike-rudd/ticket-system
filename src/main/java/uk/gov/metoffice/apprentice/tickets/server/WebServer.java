@@ -5,15 +5,14 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import uk.gov.metoffice.apprentice.tickets.database.DatabaseConnection;
 import uk.gov.metoffice.apprentice.tickets.handlers.EventsListingHandler;
 
 public class WebServer {
 
-    private DatabaseConnection databaseConnection;
+    private EventsListingHandler eventsListingHandler;
 
-    public WebServer(final DatabaseConnection databaseConnection) {
-        this.databaseConnection = databaseConnection;
+    public WebServer(final EventsListingHandler eventsListingHandler) {
+        this.eventsListingHandler = eventsListingHandler;
     }
 
     public void startServer() throws Exception {
@@ -30,7 +29,7 @@ public class WebServer {
 
         ContextHandler listCustomersHandler = new ContextHandler();
         listCustomersHandler.setContextPath("/events");
-        listCustomersHandler.setHandler(new EventsListingHandler(databaseConnection));
+        listCustomersHandler.setHandler(eventsListingHandler);
 
         ContextHandlerCollection contexts = new ContextHandlerCollection();
         contexts.setHandlers(new Handler[]{indexHandler, listCustomersHandler});
